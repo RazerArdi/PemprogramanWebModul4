@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Open Positions</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="MainPage.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <img src="linkedin.png" alt="logo" />
+      <a href="#">INPO LOKER</a>
+      <div class="divider"></div>
+      <a href="#">Careers</a>
+      <a href="#">Locations</a>
+      <a href="#">Professions</a>
+      <div class="dropdown">
+        <a href="#">Programs</a>
+        <i class="fas fa-caret-down"></i>
+      </div>
+      <div class="dropdown">
+        <a href="#">Life at INPO LOKER</a>
+        <i class="fas fa-caret-down"></i>
+      </div>
+      <a href="#">Hiring tips</a>
+      <div class="search">
+        <a href="#">Search</a>
+        <i class="fas fa-search"></i>
+      </div>
+    </header>
+    <div class="video-background">
+      <video autoplay muted loop>
+        <source
+          src="https://semar-sentinel.com/wp-content/uploads/2019/06/057542129-digital-map_prores.mp4"
+          type="video/mp4"
+        />
+      </video>
+      <div class="video-overlay"></div>
+      <div
+        class="uvc-sub-heading ult-responsive"
+        data-ultimate-target=".uvc-heading.ultimate-heading-1877673f0f46a7fda .uvc-sub-heading "
+        data-responsive-json-new='{"font-size":"desktop:75px;","line-height":"desktop:70px;"}'
+        style="font-family: 'Teko'; font-weight: 500; color: #ffffff"
+      >
+        BUSINESS INTELLIGENCE
+      </div>
+    </div>
+    <div class="container">
+      <h1>Lowongan Kerja</h1>
+
+      <!-- Form untuk menambah lowongan -->
+      <form id="lowongan-form" onsubmit="addLowongan(event)">
+          <label for="title">Title:</label>
+          <input type="text" id="title" name="title" required>
+          <br>
+          <label for="description">Description:</label>
+          <textarea id="description" name="description" required></textarea>
+          <br>
+          <label for="location">Location:</label>
+          <input type="text" id="location" name="location" required>
+          <br>
+          <button type="submit">Add Lowongan</button>
+      </form>
+      <br>
+  
+      <!-- Input untuk pencarian -->
+      <label for="search">Search:</label>
+      <input type="text" id="search" oninput="filterLowongan()" placeholder="Search lowongan...">
+      
+      <!-- Tabel untuk menampilkan data lowongan -->
+      <table border="1">
+          <thead>
+              <tr>
+                  <th onclick="sortLowongan('id')">ID</th>
+                  <th onclick="sortLowongan('title')">Title</th>
+                  <th onclick="sortLowongan('description')">Description</th>
+                  <th onclick="sortLowongan('location')">Location</th>
+                  <th>Actions</th>
+              </tr>
+          </thead>
+          <tbody id="lowongan-table-body">
+              <!-- Data lowongan akan dimasukkan secara dinamis oleh JavaScript -->
+          </tbody>
+      </table>      
+      <h1>Open Positions</h1>
+      <p>
+        INPO LOKER technology powers mission-critical, real-world decisions
+        across industries, helping operators to prevent wellness, distribute
+        vaccines, staff nurses, improve road safety, and more. Build the future
+        with us.
+      </p>
+      <div class="filters">
+        <!-- Job Type Filter -->
+        <select id="jobTypeFilter">
+          <option>All Types</option>
+          <option>Full-time</option>
+          <option>Internship</option>
+          <option>Scholarship</option>
+        </select>
+      
+        <!-- Location Filter -->
+        <select id="locationFilter">
+          <option>All Locations</option>
+          <optgroup label="North America">
+            <option value="Chicago, IL">Chicago, IL</option>
+            <option value="Denver, CO">Denver, CO</option>
+            <option value="Honolulu, HI">Honolulu, HI</option>
+            <option value="New York, NY">New York, NY</option>
+            <option value="Palo Alto, CA">Palo Alto, CA</option>
+            <option value="Remote: US - East">Remote: US - East</option>
+            <option value="Remote: US - Mid-West">Remote: US - Mid-West</option>
+            <option value="Remote: US - South">Remote: US - South</option>
+            <option value="Seattle, WA">Seattle, WA</option>
+            <option value="Washington, D.C.">Washington, D.C.</option>
+          </optgroup>
+          <optgroup label="Europe & Middle East">
+            <option value="Copenhagen, Denmark">Copenhagen, Denmark</option>
+            <option value="Doha, Qatar">Doha, Qatar</option>
+            <option value="London, United Kingdom">London, United Kingdom</option>
+            <option value="Madrid, Spain">Madrid, Spain</option>
+            <option value="Stockholm, Sweden">Stockholm, Sweden</option>
+            <option value="Tel Aviv, Israel">Tel Aviv, Israel</option>
+          </optgroup>
+          <optgroup label="Asia & Pacific">
+            <option value="Canberra, Australia">Canberra, Australia</option>
+            <option value="Seoul, South Korea">Seoul, South Korea</option>
+            <option value="Sydney, Australia">Sydney, Australia</option>
+            <option value="Tokyo, Japan">Tokyo, Japan</option>
+          </optgroup>
+        </select>
+      
+        <!-- Business Area Filter -->
+        <select id="businessAreaFilter">
+          <option value="" selected>All Business Areas</option>
+          <optgroup label="Business Development">
+            <option value="Commercial">Commercial</option>
+            <option value="Engineering">Engineering</option>
+            <option value="International Government">International Government</option>
+            <option value="US Government">US Government</option>
+          </optgroup>
+          <optgroup label="Product Development">
+            <option value="Foundry & Gotham">Foundry & Gotham</option>
+            <option value="Production Infrastructure">Production Infrastructure</option>
+            <option value="Reliability & Operations">Reliability & Operations</option>
+          </optgroup>
+          <optgroup label="Sales">
+            <option value="US Commercial Sales">US Commercial Sales</option>
+            <option value="USG Sales">USG Sales</option>
+          </optgroup>
+          <optgroup label="Other">
+            <option value="Administrative">Administrative</option>
+            <option value="Communications">Communications</option>
+            <option value="Finance">Finance</option>
+            <option value="Global Security and Investigations">Global Security and Investigations</option>
+            <option value="Information Security">Information Security</option>
+            <option value="Internships">Internships</option>
+            <option value="Legal">Legal</option>
+            <option value="Mission Operations">Mission Operations</option>
+            <option value="New Graduates">New Graduates</option>
+            <option value="People">People</option>
+            <option value="Recruiting">Recruiting</option>
+            <option value="Scholarships">Scholarships</option>
+          </optgroup>
+        </select>
+        <input type="text" placeholder="Search" />
+      </div>
+      <div class="columns">
+        <div class="columns">
+            <div class="column">
+              <h2>Business Development</h2>
+              <ul>
+                <li><a href="#">Deployment Strategist <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Deployment Strategist - Defense Industrial Base <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Forward Deployed AI Engineer <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Forward Deployed Enablement Engineer - Customer Success <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Forward Deployed Software Engineer <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Forward Deployed Software Engineer - Defense Industrial Base <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Program Manager - Commercial Deployments <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Proposal Writer and Strategist - US Commercial <i class="fas fa-arrow-right"></i></a></li>
+              </ul>
+              <h2>Engineering</h2>
+              <ul>
+                <li><a href="#">Forward Deployed Software Engineer <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Forward Deployed Software Engineer - AUS Government <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Forward Deployed Software Engineer - Intel <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Forward Deployed Software Engineer - US Government <i class="fas fa-arrow-right"></i></a></li>
+              </ul>
+              <h2>International Government</h2>
+              <ul>
+                <li><a href="#">Deployment Strategist <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Deployment Strategist - AUS Government <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Deployment Strategist - UK Government <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Forward Deployed Digital Strategist - UK Government <i class="fas fa-arrow-right"></i></a></li>
+              </ul>
+              <h2>US Government</h2>
+              <ul>
+                <li><a href="#">Business Cultivation Engineer <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Capture and Proposal Strategist - US Defense <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Deployment Strategist - Intel <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Deployment Strategist - Japan Forward Deployed <i class="fas fa-arrow-right"></i></a></li>
+              </ul>
+              <h2>New Graduates</h2>
+              <ul>
+                <li><a href="#">Forward Deployed Software Engineer, New Grad <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Forward Deployed Software Engineer, New Grad - UK Government <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Forward Deployed Software Engineer, New Grad - US Government <i class="fas fa-arrow-right"></i></a></li>
+              </ul>
+            </div>
+          
+            <div class="column">
+              <h2>Product Development</h2>
+              <ul>
+                <li><a href="#">Backend Software Engineer - Application Development <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Backend Software Engineer - Infrastructure <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Full Stack Software Engineer - Application Development <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Mixed Reality Developer <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Product Designer <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Product Designer - US Government <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Product Designer, New Grad - US Government <i class="fas fa-arrow-right"></i></a></li>
+              </ul>
+              <h2>Production Infrastructure</h2>
+              <ul>
+                <li><a href="#">Engineering Manager - Apollo Platform <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Forward Deployed Infrastructure Engineer - US Government <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Front End Engineer - Apollo Platform <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Full Stack Software Engineer - Apollo Platform <i class="fas fa-arrow-right"></i></a></li>
+              </ul>
+              <h2>Reliability & Operations</h2>
+              <ul>
+                <li><a href="#">Incident Management Engineer <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Product Reliability Engineer <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Site Reliability Engineer - Database Operations <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Site Reliability Engineer - US Government <i class="fas fa-arrow-right"></i></a></li>
+              </ul>
+              <h2>Finance</h2>
+              <ul>
+                <li><a href="#">Accounts Receivable Manager - US Government <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Financial Audit Manager <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">International Accounting Manager <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Procurement Contracts Specialist <i class="fas fa-arrow-right"></i></a></li>
+              </ul>
+              <h2>Sales</h2>
+              <ul>
+                <li><a href="#">US Commercial Sales <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Account Executive <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Development Strategist <i class="fas fa-arrow-right"></i></a></li>
+              </ul>
+            </div>
+          
+            <div class="column">
+              <h2>Internships</h2>
+              <ul>
+                <li><a href="#">Forward Deployed Software Engineer, Internship <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Forward Deployed Software Engineer, Internship - Defense Tech <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Forward Deployed Software Engineer, Internship - UK Government <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Forward Deployed Software Engineer, Internship - US Government <i class="fas fa-arrow-right"></i></a></li>
+              </ul>
+              <h2>Information Security</h2>
+              <ul>
+                <li><a href="#">Application Security Engineer <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Platform Engineer - Identity and Access Management (IAM) <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Principal Infrastructure Security Engineer <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Site Reliability Engineer - Security Infrastructure <i class="fas fa-arrow-right"></i></a></li>
+              </ul>
+              <h2>Legal</h2>
+              <ul>
+                <li><a href="#">Senior Government Contracts Strategist <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">US Government Legal Counsel <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">US Privacy Counsel <i class="fas fa-arrow-right"></i></a></li>
+              </ul>
+              <h2>Global Security and Investigations</h2>
+              <ul>
+                <li><a href="#">Mission Security Analyst <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">Physical Security Analyst <i class="fas fa-arrow-right"></i></a></li>
+              </ul>
+              <h2>People</h2>
+              <ul>
+                <li><a href="#">Learning Program Manager <i class="fas fa-arrow-right"></i></a></li>
+                <li><a href="#">People Partner <i class="fas fa-arrow-right"></i></a></li>
+              </ul>
+              <h2>Scholarships</h2>
+              <ul>
+                <li><a href="#">INPO LOKER Defense Tech Fellowship <i class="fas fa-arrow-right"></i></a></li>
+              </ul>
+            </div>
+          </div>
+          
+    </div>
+    <div class="footer">
+      <div class="footer-left">
+        <div class="social-icons">
+          <i class="fab fa-youtube"> </i>
+          <i class="fab fa-twitter"> </i>
+          <i class="fab fa-linkedin"> </i>
+          <i class="fab fa-github"> </i>
+        </div>
+        <p>© 2024 INPO LOKER Technologies Inc. All rights reserved.</p>
+        <p>Cookies Settings</p>
+        <div class="languages">
+          <img
+            alt="US Flag"
+            height="20"
+            src="https://storage.googleapis.com/a1aa/image/RJAOWbfBNYToB6o8L9i5Xb6S9q8lhiohV1FouegegZeRKuMPB.jpg"
+            width="20"
+          />
+          <img
+            alt="Hong Kong Flag"
+            height="20"
+            src="https://storage.googleapis.com/a1aa/image/y8rOkKyvRTbgKNRa6BzoFpd28vNOiIcCMaEPAWS3qP8o4y8E.jpg"
+            width="20"
+          />
+          <img
+            alt="Germany Flag"
+            height="20"
+            src="https://storage.googleapis.com/a1aa/image/KMULnA94jBbfAqeXiiur29noB8JlKKWMdGfQ61tZjLfBKuMPB.jpg"
+            width="20"
+          />
+          <img
+            alt="Japan Flag"
+            height="20"
+            src="https://storage.googleapis.com/a1aa/image/MdAmVKm6wfW8Ji3hmspSpxqMhKwtBksTry7imMfD93afEXmnA.jpg"
+            width="20"
+          />
+          <img
+            alt="South Korea Flag"
+            height="20"
+            src="https://storage.googleapis.com/a1aa/image/Azf0NoGW0yQJBylAJJvS3JCY10KfjSlDXeb3Y5twb6yDFXmnA.jpg"
+            width="20"
+          />
+        </div>
+      </div>
+      <div class="footer-columns">
+        <div class="footer-column">
+          <h3>OFFERINGS</h3>
+          <ul>
+            <li>Anti-Money Laundering</li>
+            <li>Automotive &amp; Mobility</li>
+            <li>Data Protection</li>
+            <li>Defense</li>
+            <li>Ecosystem</li>
+            <li>Energy</li>
+            <li>Federal Health</li>
+            <li>FedStart</li>
+            <li>Financial Services</li>
+            <li>INPO LOKER for Builders</li>
+            <li>Govt Financial Management</li>
+            <li>Health &amp; Life Sciences</li>
+            <li>Hospital Operations</li>
+            <li>Intelligence</li>
+            <li>INPO LOKER HyperAuto</li>
+            <li>Rail</li>
+            <li>Readiness</li>
+            <li>Retail</li>
+            <li>Secure Collaboration</li>
+            <li>Semiconductors</li>
+            <li>Supply Chain</li>
+            <li>Telecommunications</li>
+            <li>Utilities</li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>IMPACT STUDIES</h3>
+          <ul>
+            <li>Airbus</li>
+            <li>Axel Springer</li>
+            <li>Cleveland Clinic</li>
+            <li>Concordance</li>
+            <li>Doosan Infracore</li>
+            <li>Ferrari</li>
+            <li>Fujitsu</li>
+            <li>Grupo Globo</li>
+            <li>HHS &amp; CDC</li>
+            <li>Jacobs</li>
+            <li>Kinder Morgan</li>
+            <li>NHS</li>
+            <li>Pacific Gas &amp; Electric</li>
+            <li>Ringier</li>
+            <li>Sonnedix</li>
+            <li>SOMPO</li>
+            <li>Swiss Re</li>
+            <li>Tampa General Hospital</li>
+            <li>World Food Programme</li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>CAPABILITIES</h3>
+          <ul>
+            <li>AI + ML</li>
+            <li>AIP for Developers</li>
+            <li>Data Integration</li>
+            <li>Digital Twin</li>
+            <li>Dynamic Scheduling</li>
+            <li>Edge AI</li>
+            <li>Marketplace</li>
+            <li>MetaConstellation</li>
+            <li>Pipeline Builder</li>
+            <li>Process Mining</li>
+            <li>Real-Time Alerting</li>
+            <li>Streaming</li>
+            <li>Warp Speed</li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>DOCUMENTS</h3>
+          <ul>
+            <li>Developer Community</li>
+            <li>Platform Documentation</li>
+            <li>Palantir Developers</li>
+            <li>Security Bulletins</li>
+            <li>Trust Center</li>
+            <li>Modern Slavery Statement</li>
+            <li>Cookies</li>
+            <li>Privacy and Security</li>
+            <li>Sustainability</li>
+            <li>Human Rights Policy</li>
+            <li>Terms of Use</li>
+            <li>Sitemap</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script src="MainPage.js"></script>
+    <script>
+        let lowonganData = []; // Data lowongan
+
+        // Fungsi untuk mengambil data lowongan dari API dan menampilkan di tabel
+        async function fetchLowongan() {
+            try {
+                const response = await fetch('http://localhost:8000/PHP/api/index.php');
+                const data = await response.json();
+                lowonganData = data.lowongan || [];
+                renderTable(lowonganData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        // Fungsi untuk menampilkan data lowongan di tabel
+        function renderTable(data) {
+            const tableBody = document.getElementById('lowongan-table-body');
+            tableBody.innerHTML = '';
+            data.forEach(lowongan => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${lowongan.id}</td>
+                    <td>${lowongan.title}</td>
+                    <td>${lowongan.description}</td>
+                    <td>${lowongan.location}</td>
+                    <td>
+                        <button onclick="deleteLowongan(${lowongan.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Fungsi untuk mengurutkan data lowongan berdasarkan kolom
+        function sortLowongan(column) {
+            lowonganData.sort((a, b) => {
+                if (a[column] < b[column]) return -1;
+                if (a[column] > b[column]) return 1;
+                return 0;
+            });
+            renderTable(lowonganData);
+        }
+
+        // Fungsi untuk memfilter lowongan berdasarkan input pencarian
+        function filterLowongan() {
+            const searchQuery = document.getElementById('search').value.toLowerCase();
+            const filteredData = lowonganData.filter(lowongan =>
+                lowongan.title.toLowerCase().includes(searchQuery) || 
+                lowongan.description.toLowerCase().includes(searchQuery)
+            );
+            renderTable(filteredData);
+        }
+
+        // Memuat data lowongan ketika halaman dimuat
+        window.onload = fetchLowongan;
+
+          // Fungsi untuk menghapus lowongan
+  async function deleteLowongan(id) {
+    try {
+        const response = await fetch(`http://localhost:8000/PHP/api/index.php/lowongan/${id}`, {
+            method: 'DELETE',
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            fetchLowongan(); // Update tabel setelah menghapus lowongan
+        } else {
+            console.error('Failed to delete lowongan');
+        }
+    } catch (error) {
+        console.error('Error deleting lowongan:', error);
+    }
+}
+
+// Fungsi untuk menambahkan lowongan
+async function addLowongan(event) {
+  event.preventDefault(); // Mencegah form dari submit default
+
+  const title = document.getElementById('title').value;
+  const description = document.getElementById('description').value;
+  const location = document.getElementById('location').value;
+
+  const newLowongan = { title, description, location };
+
+  try {
+      const response = await fetch('http://localhost:8000/PHP/api/index.php', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newLowongan),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+          fetchLowongan(); // Update tabel setelah menambah lowongan baru
+      } else {
+          console.error('Failed to add lowongan');
+      }
+  } catch (error) {
+      console.error('Error adding lowongan:', error);
+  }
+
+  // Reset form
+  document.getElementById('lowongan-form').reset();
+}
+    </script>
+  </body>
+</html>
